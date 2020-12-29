@@ -1,6 +1,10 @@
+import { Answer } from "./answer";
+
 export class Ask {
-  index: number;
+  id: number;
   value: string;
   type: string;
-  answers: Array<any>;
+  answer: string;
+  order: number;
+  answers: Array<Answer>;
 }
