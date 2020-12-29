@@ -1,0 +1,32 @@
+.question {
+  padding: 10px;
+  padding-bottom: 0;
+}
+
+mat-icon {
+  transition: .3s;
+}
+
+mat-panel-title {
+  align-items: center;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 600px;
+}
+
+.add-list-item {
+  max-height: 0;
+  transition: max-height .3s;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-list-item.enabled {
+  max-height: 70px;
+}

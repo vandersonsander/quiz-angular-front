@@ -1,0 +1,26 @@
+mat-card-title {
+  position: relative;
+  overflow: visible;
+  padding-left: 40px;
+}
+mat-card-title span:not(.space) {
+  display: block;
+  position: absolute;
+  background: #000;
+  width: 30px;
+  height: 30px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  z-index: 5;
+  left: 0;
+  font-size: 1rem;
+  transform: scale(1.1);
+}
+
+.mat-figure {
+  display: block;
+  background: #000;
+}

@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-toolbar class="title">
+    <mat-card-title>
+      <span>{{ chapter.number }}</span>{{ chapter.title }}
+      <mat-icon>arrow_circle_up</mat-icon>
+    </mat-card-title>
+    <span class="example-spacer"></span>
+    <mat-icon>skip_next</mat-icon>
+    <mat-icon>height</mat-icon>
+    <mat-icon>delete</mat-icon>
+  </mat-toolbar>
+  <mat-accordion>
+    <app-ask *ngFor="let ask of chapter.asks"
+      [ask]=ask></app-ask>
+  </mat-accordion>
+</mat-card>

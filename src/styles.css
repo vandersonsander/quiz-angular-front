@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+/* Colors */
+
+
+/* General Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  font-size: 1rem;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: #f0f2f5;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-card {
+  margin: 10px;
+}
+
+.title mat-card-title {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+mat-card-title mat-icon {
+  margin-left: 5px;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+.one-select mat-radio-button {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}

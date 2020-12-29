@@ -1,0 +1,104 @@
+
+<mat-expansion-panel class="title"
+  [expanded]="step === ask.index"
+  (opened)="setStep(ask.index || 0)"
+  #panel
+  >
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{ ask.value }}
+    </mat-panel-title>
+    <span class="example-spacer"></span>
+
+    <mat-action-row>
+      <button mat-icon-button (click)="nextStep($event, panel)">
+        <mat-icon>skip_next</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>height</mat-icon>
+      </button>
+      <button mat-icon-button (click)="panel.close()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel-header>
+  <div class="ask-container"
+  [ngSwitch]="ask.type">
+    <div *ngSwitchCase="'input'">
+      <mat-form-field>
+        <mat-label>Digite a sua cidade</mat-label>
+        <input type="text"
+          aria-label="city"
+          matInput
+          list="cities">
+        <datalist id="cities" name="cities">
+          <option *ngFor="let city of cities" [value]="city.nome"></option>
+        </datalist>
+      </mat-form-field>
+      <mat-action-row>
+        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-button (click)="panel.close()">
+          Cancelar
+        </button>
+      </mat-action-row>
+    </div>
+
+    <div *ngSwitchCase="'one-select'" class="one-select">
+      <mat-radio-group>
+        <mat-radio-button
+          *ngFor="let answer of ask.answers"
+          [value]="answer.value"
+          [checked]="answer.checked">
+          {{ answer.value }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-action-row>
+        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-button (click)="panel.close()">
+          Cancelar
+        </button>
+      </mat-action-row>
+    </div>
+
+    <div *ngSwitchCase="'multi-select'" class="multi-select">
+      <ul>
+        <li *ngFor="let answer of ask.answers" class="list-item">
+          <mat-checkbox
+            #answerCheck
+            [color]="'primary'"
+            [checked]="ngModel"
+            [(ngModel)]="answer.checked"
+            [disabled]="reachedLimit && !answerCheck.checked"
+            (change)="validateAnswers(answerCheck)">
+            {{ answer.value }}
+          </mat-checkbox>
+          <mat-icon (click)="deleteItem()">delete</mat-icon>
+        </li>
+        <li class="add-list-item" [class.enabled]="addText">
+          <mat-form-field>
+            <mat-label>Digite a marca</mat-label>
+            <input type="text"
+              matInput
+              [(ngModel)]="addTextValue"
+              #textItem>
+          </mat-form-field>
+          <mat-icon (click)="addItem(textItem, addTextValue)">
+            add_circle
+          </mat-icon>
+        </li>
+      </ul>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="addText = true">Adicionar Nova Linha</button>
+        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-button
+          (click)="panel.close(); addText = false">
+          Cancelar
+        </button>
+      </mat-action-row>
+    </div>
+
+    <div *ngSwitchDefault>
+    </div>
+  </div>
+</mat-expansion-panel>
