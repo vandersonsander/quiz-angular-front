@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Chapter } from './chapter';
 
 @Component({
   selector: 'app-chapter',
@@ -7,11 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ChapterComponent implements OnInit {
 
-  @Input() chapter: {
-    number: number,
-    title: string,
-    asks: Array<any>
-  };
+  @Input() chapter: Chapter;
 
   constructor() { }
 

@@ -1,12 +1,12 @@
 
 <mat-expansion-panel class="title"
-  [expanded]="step === ask.index"
-  (opened)="setStep(ask.index || 0)"
+  [expanded]="step === ask.order"
+  (opened)="setStep(ask.order || 0)"
   #panel
   >
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{ ask.value }}
+      Q{{ (ask.order || 0) + 1 }} - {{ ask.value }}
     </mat-panel-title>
     <span class="example-spacer"></span>
 
@@ -22,18 +22,32 @@
       </button>
     </mat-action-row>
   </mat-expansion-panel-header>
+
   <div class="ask-container"
   [ngSwitch]="ask.type">
     <div *ngSwitchCase="'input'">
       <mat-form-field>
-        <mat-label>Digite a sua cidade</mat-label>
+        <mat-label>Digite a sua resposta</mat-label>
         <input type="text"
-          aria-label="city"
           matInput
           list="cities">
         <datalist id="cities" name="cities">
           <option *ngFor="let city of cities" [value]="city.nome"></option>
         </datalist>
+      </mat-form-field>
+      <mat-action-row>
+        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-button (click)="panel.close()">
+          Cancelar
+        </button>
+      </mat-action-row>
+    </div>
+
+    <div *ngSwitchCase="'input-number'">
+      <mat-form-field>
+        <mat-label>Digite a sua resposta</mat-label>
+        <input type="number"
+          matInput>
       </mat-form-field>
       <mat-action-row>
         <button mat-raised-button color="primary">Salvar</button>

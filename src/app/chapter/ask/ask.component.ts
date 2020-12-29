@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AnswerService } from './answer.service';
+import { Ask } from './ask';
 import { AskService } from './ask.service';
 import { CitiesService } from './cities.service';
 
@@ -9,14 +11,9 @@ import { CitiesService } from './cities.service';
 })
 export class AskComponent implements OnInit {
 
-  @Input() ask: {
-    type: string,
-    value: string,
-    index: number,
-    answers: Array<Object>
-  };
+  @Input() ask: Ask;
 
-  step: number = 2;
+  step: number = 0;
   expanded: boolean = false;
   cities: Array<any> = [];
   limitRank: number = 2;
@@ -26,7 +23,8 @@ export class AskComponent implements OnInit {
   addTextValue: string = '';
 
   constructor(private _citiesService: CitiesService,
-    private _askService: AskService) { }
+    private _askService: AskService,
+    private _answerService: AnswerService) { }
 
   ngOnInit(): void {
     this._citiesService.getCities().subscribe((cities: Array<any>) =>
@@ -73,7 +71,7 @@ export class AskComponent implements OnInit {
       input.validate();
       return;
     }
-    this.ask.answers.push({ value: item, checked: false });
+    // this.ask.answers.push({ value: item, checked: false });
     this.addTextValue = '';
     this.addText = false;
   }
