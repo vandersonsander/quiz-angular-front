@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -11,6 +12,7 @@ import { Ask } from './ask';
 
 export class AskService {
   emmitSelectedAsk = new EventEmitter<number>();
+  emmitCurrentLoopAsk = new EventEmitter<Ask>();
   currentAsk: number = 0;
 
   constructor(private http: HttpClient) { }
@@ -19,9 +21,13 @@ export class AskService {
     return this.currentAsk;
   }
 
+  selectLoopAsk(ask: any) {
+    this.emmitCurrentLoopAsk.emit(ask.answers);
+  };
+
   selectAsk(askIndex: number) {
     this.currentAsk = askIndex;
-    this.emmitSelectedAsk.emit(this.currentAsk);
+    this.emmitSelectedAsk.next(this.currentAsk);
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -36,6 +42,7 @@ export class AskService {
       'An error occurred please try again later.');
   }
 
+  // CRUD
   index(): Observable<Ask[]> {
     return this.http.get<Ask[]>(`${environment.urlConfig.baseUrl}/ask`);
   }

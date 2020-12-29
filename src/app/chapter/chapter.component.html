@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card >
   <mat-toolbar class="title">
     <mat-card-title>
       <span>{{ chapter.order + 1 }}</span>{{ chapter.title }}
@@ -9,8 +9,13 @@
     <mat-icon>height</mat-icon>
     <mat-icon>delete</mat-icon>
   </mat-toolbar>
-  <mat-accordion>
+  <mat-accordion
+    cdkDropList
+    #askList="cdkDropList"
+    [cdkDropListData]="chapter.asks"
+    (cdkDropListDropped)="onDropItem($event)">
     <app-ask *ngFor="let ask of chapter.asks"
-      [ask]=ask></app-ask>
+      [ask]=ask
+      cdkDrag></app-ask>
   </mat-accordion>
 </mat-card>

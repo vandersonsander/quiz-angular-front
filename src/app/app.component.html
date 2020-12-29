@@ -1,7 +1,7 @@
 <mat-sidenav-container class="container">
   <mat-sidenav-content>
     <app-chapter class="chapter-wrap"
-      *ngFor="let chapter of chapters"
+      *ngFor="let chapter of chapters | async"
       [chapter]="chapter"></app-chapter>
   </mat-sidenav-content>
   <mat-sidenav mode="side" position="end" opened>
