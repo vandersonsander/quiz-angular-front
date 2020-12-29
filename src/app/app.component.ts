@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Chapter } from './chapter/chapter';
 import { ChapterService } from './chapter/chapter.service';
 
@@ -10,28 +12,28 @@ import { ChapterService } from './chapter/chapter.service';
 export class AppComponent implements OnInit {
 
   title: string = 'Quiz Angular';
-  chapters: Chapter[] = null;
+  chapters: Observable<Chapter[]>;
 
   constructor(private _chapterService: ChapterService) { }
 
   ngOnInit(): void {
-    this._chapterService.index().subscribe(data => {
-      this.chapters = data;
-      this.orderChapters();
-    });
-  }
+    this.chapters = this._chapterService.index()
+    .pipe(
+      map((chapters: Chapter[]) => {
+        let askCount: number = 0;
+        // ordered questions
+        return chapters.map((chapter, index) => {
+          chapter.order = index;
+          // ordered asks
+          chapter.asks = chapter.asks.map((ask: any) => {
+            ask.order = askCount++;
+            return ask;
+          });
+          return chapter;
+        });
 
-  orderChapters() {
-    let askCount: number = 0;
-    this.chapters = this.chapters.map((chapter: any, index) => {
-      chapter.order = index;
-      // order asks
-      chapter.asks = chapter.asks.map((ask: any) => {
-        ask.order = askCount++;
-        return ask;
       })
-      return chapter;
-    })
+    )
   }
 
 }

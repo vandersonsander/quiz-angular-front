@@ -17,7 +17,6 @@ ul {
 body {
   font-size: 1rem;
   font-family: 'Roboto', Arial, sans-serif;
-  background: #f0f2f5;
 }
 
 html, body { height: 100%; }
@@ -48,4 +47,13 @@ mat-icon {
 
 .example-spacer {
   flex: 1 1 auto;
+}
+
+mat-tab-header .mat-tab-label {
+  height: 10px;
+}
+
+mat-sidenav {
+  background: #FAFAFA!important;
+  border: none;
 }

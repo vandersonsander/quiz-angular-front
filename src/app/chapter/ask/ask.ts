@@ -1,3 +1,4 @@
+import { Chapter } from "../chapter";
 import { Answer } from "./answer";
 
 export class Ask {
@@ -6,5 +7,6 @@ export class Ask {
   type: string;
   answer: string;
   order: number;
+  chapter: Chapter;
   answers: Array<Answer>;
 }

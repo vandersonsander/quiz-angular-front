@@ -27,7 +27,10 @@ export class AnswerService {
   }
 
   index(): Observable<Answer[]> {
-    return this.http.get<Answer[]>(`${environment.urlConfig.baseUrl}/answer`);
+    return this.http.get<Answer[]>(`${environment.urlConfig.baseUrl}/answer`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   show(id: number): Observable<Answer> {
@@ -41,25 +44,16 @@ export class AnswerService {
   store(answer: Answer): Observable<Answer> {
     return this.http
       .post<Answer>
-        (`${environment.urlConfig.baseUrl}/answer`, answer)
-      .pipe(
-        catchError(this.handleError)
-      );
+        (`${environment.urlConfig.baseUrl}/answer`, answer);
   }
 
   update(id: number, answer: Answer): Observable<Answer> {
     return this.http
       .put<Answer>
-        (`${environment.urlConfig.baseUrl}/answer/${id}`, answer)
-      .pipe(
-        catchError(this.handleError)
-      );
+        (`${environment.urlConfig.baseUrl}/answer/${id}`, answer);
   }
 
-  destroy(id: number): void {
-    this.http.delete(`${environment.urlConfig.baseUrl}/answer/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      )
+  destroy(id: number): Observable<any> {
+    return this.http.delete(`${environment.urlConfig.baseUrl}/answer/${id}`);
   }
 }

@@ -15,22 +15,21 @@ export class ChapterService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
       console.error(
         `Code ${error.status}, ` +
         `Message: ${error.error}`);
     }
-    // Return an observable with a user-facing error message.
     return throwError(
       'An error occurred please try again later.');
   }
 
   index(): Observable<Chapter[]> {
-    return this.http.get<Chapter[]>(`${environment.urlConfig.baseUrl}/chapter`);
+    return this.http.get<Chapter[]>(`${environment.urlConfig.baseUrl}/chapter`)
+    .pipe(
+      catchError(this.handleError)
+    );
   }
 
   show(id: number): Observable<Chapter> {
@@ -44,25 +43,16 @@ export class ChapterService {
   store(chapter: Chapter): Observable<Chapter> {
     return this.http
       .post<Chapter>
-        (`${environment.urlConfig.baseUrl}/chapter`, chapter)
-      .pipe(
-        catchError(this.handleError)
-      );
+        (`${environment.urlConfig.baseUrl}/chapter`, chapter);
   }
 
   update(id: number, chapter: Chapter): Observable<Chapter> {
     return this.http
       .put<Chapter>
-        (`${environment.urlConfig.baseUrl}/chapter/${id}`, chapter)
-      .pipe(
-        catchError(this.handleError)
-      );
+        (`${environment.urlConfig.baseUrl}/chapter/${id}`, chapter);
   }
 
   destroy(id: number): void {
-    this.http.delete(`${environment.urlConfig.baseUrl}/chapter/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      )
+    this.http.delete(`${environment.urlConfig.baseUrl}/chapter/${id}`);
   }
 }

@@ -1,7 +1,7 @@
 
 <mat-expansion-panel class="title"
   [expanded]="step === ask.order"
-  (opened)="setStep(ask.order || 0)"
+  (opened)="setStep(ask.order || 0); actionOnOpen(ask)"
   #panel
   >
   <mat-expansion-panel-header>
@@ -30,13 +30,16 @@
         <mat-label>Digite a sua resposta</mat-label>
         <input type="text"
           matInput
+          [(ngModel)]="ask.answer"
+          [value]="ngModel"
           list="cities">
         <datalist id="cities" name="cities">
           <option *ngFor="let city of cities" [value]="city.nome"></option>
         </datalist>
       </mat-form-field>
       <mat-action-row>
-        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="primary"
+          (click)="saveAnswer(); nextStep()">Salvar</button>
         <button mat-button (click)="panel.close()">
           Cancelar
         </button>
@@ -47,10 +50,13 @@
       <mat-form-field>
         <mat-label>Digite a sua resposta</mat-label>
         <input type="number"
+          [(ngModel)]="ask.answer"
+          [value]="ngModel"
           matInput>
       </mat-form-field>
       <mat-action-row>
-        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="primary"
+          (click)="saveAnswer(); nextStep()">Salvar</button>
         <button mat-button (click)="panel.close()">
           Cancelar
         </button>
@@ -58,17 +64,18 @@
     </div>
 
     <div *ngSwitchCase="'one-select'" class="one-select">
-      <mat-radio-group>
+      <mat-radio-group
+        [(ngModel)]="ask.answer">
         <mat-radio-button
           *ngFor="let answer of ask.answers"
-          [value]="answer.value"
-          [checked]="answer.checked">
+          [value]="answer.value">
           {{ answer.value }}
         </mat-radio-button>
       </mat-radio-group>
 
       <mat-action-row>
-        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="primary"
+          (click)="saveAnswer(); nextStep()">Salvar</button>
         <button mat-button (click)="panel.close()">
           Cancelar
         </button>
@@ -77,17 +84,23 @@
 
     <div *ngSwitchCase="'multi-select'" class="multi-select">
       <ul>
-        <li *ngFor="let answer of ask.answers" class="list-item">
+        <li class="list-item"
+          *ngFor="let answer of ask.answers"
+          cdkDropList
+          #answerList="cdkDropList"
+          [cdkDropListData]="ask.answers"
+          (cdkDropListDropped)="onDropItem($event)">
           <mat-checkbox
             #answerCheck
             [color]="'primary'"
             [checked]="ngModel"
             [(ngModel)]="answer.checked"
             [disabled]="reachedLimit && !answerCheck.checked"
-            (change)="validateAnswers(answerCheck)">
+            (change)="validateAnswers(answerCheck)"
+            cdkDrag>
             {{ answer.value }}
           </mat-checkbox>
-          <mat-icon (click)="deleteItem()">delete</mat-icon>
+          <mat-icon (click)="deleteItem(answer.id)">delete</mat-icon>
         </li>
         <li class="add-list-item" [class.enabled]="addText">
           <mat-form-field>
@@ -104,7 +117,35 @@
       </ul>
       <mat-action-row>
         <button mat-button color="warn" (click)="addText = true">Adicionar Nova Linha</button>
-        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="primary"
+          (click)="saveAnswer(); nextStep()">Salvar</button>
+        <button mat-button
+          (click)="panel.close(); addText = false">
+          Cancelar
+        </button>
+      </mat-action-row>
+    </div>
+
+    <div *ngSwitchCase="'loop'">
+      <mat-horizontal-stepper #stepper linear>
+        <mat-step *ngFor="let answer of ask.answers">
+          <ng-template matStepLabel color="warn"></ng-template>
+          <mat-label>{{ answer.value }}</mat-label>
+          <div>
+            <button mat-raised-button
+              color="primary"
+              matStepperNext
+              (click)="setAnswerLoop(true, answer)">Sim</button>
+            <button mat-raised-button
+              color="warn"
+              matStepperNext
+              (click)="setAnswerLoop(false, answer)">Não</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+      <mat-action-row>
+        <button mat-raised-button color="primary"
+          (click)="saveAnswer(); nextStep()">Salvar</button>
         <button mat-button
           (click)="panel.close(); addText = false">
           Cancelar
