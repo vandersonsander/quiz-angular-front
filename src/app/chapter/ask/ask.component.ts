@@ -16,7 +16,7 @@ export class AskComponent implements OnInit {
 
   @Input() ask: Ask;
 
-  step: number = 3;
+  step: number = 0;
   expanded: boolean = false;
   cities: Array<any> = [];
   limitRank: number = 2;
